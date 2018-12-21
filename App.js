@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, SectionList } from 'react-native';
+import { StyleSheet, Text, View, SectionList, TouchableHighlight } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import * as Icon from '@expo/vector-icons'
+import AddModal from './components/AddModal'
+import data from './data'
 
 class HomeScreen extends React.Component {
 	static navigationOptions = {
@@ -14,6 +16,9 @@ class HomeScreen extends React.Component {
 		fontWeight: 'bold',
 		},
 
+	}
+	_onPressAdd = () => {
+		this.refs.addModal.showAddModal()
 	}
 
 	_renderItem = ({item}) => {
@@ -59,47 +64,33 @@ class HomeScreen extends React.Component {
 			<View style={styles.container}>
 				<View style={styles.list}>
 					<SectionList 
-						sections={[
-							{
-								title: 'feb 10 2016', 
-								data: [
-									{info: 'interview at google', time: '12:30PM', completed: false},
-									{info: 'Pick up the kids', time: '4:30PM', completed: false}
-								]
-							},
-							{
-								title: 'feb 9 2016',
-								data: [
-									{info: 'Brain`s birthday party', time: '7:00PM', completed: false},
-									{info: 'First project due and start second project', time: '9:30AM', completed: false}
-								]
-							},
-							{
-								title: 'feb 6 2016',
-								data: [
-									{info: 'Finish the first iteration before sleep', time: '9:00PM', completed: true},
-									{info: 'Dinner at Partycity', time: '7:00PM', completed: true},
-									{info: 'Bring latop to the meeting', time: '8:00AM', completed: true},
-									{info: 'Leg day', time: '6:00AM', completed: true}
-								]
-							},
-							{
-								title: 'feb 6 2016',
-								data: [
-									{info: 'Finish the first iteration before sleep', time: '9:00PM', completed: true},
-									{info: 'Dinner at Partycity', time: '7:00PM', completed: true},
-									{info: 'Bring latop to the meeting', time: '8:00AM', completed: true},
-									{info: 'Leg day', time: '6:00AM', completed: true}
-								]
-							},
-						]}
+						sections={data}
 						renderItem={this._renderItem}
 						renderSectionHeader={this._renderHeader}
 						keyExtractor={(item, index) => index}
 					/>
+					<AddModal ref={'addModal'} />
+					
 				</View>
+				<TouchableHighlight
+						onPress={this._onPressAdd}
+					>
+						<View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+							<Icon.MaterialIcons name='add-circle' size={60} color='green' />
+						</View>
+					</TouchableHighlight>
 			</View>
 		);
+	}
+}
+
+class FilterScreen extends React.Component {
+	render() {
+		return(
+			<View>
+				<Text>Filter </Text>
+			</View>
+		)
 	}
 }
 
@@ -122,7 +113,7 @@ const styles = StyleSheet.create({
 	list: {  margin: 5 },
 	task: { marginBottom: 10, marginTop: 10,},
 	taskTitle: { margin: 10},
-	taskInfo: {backgroundColor: 'white', padding: 15,},
+	taskInfo: {backgroundColor: 'white',},
 	item: {flexDirection: 'row',justifyContent: 'space-between', alignItems: 'center', margin: 5},
 	timeView:{flexDirection: 'row',justifyContent: 'space-between', alignItems: 'center'}
 });
